@@ -5,6 +5,8 @@ const comicsBaseUrl = "https://gateway.marvel.com:443/v1/public/characters/";
 
 const searchBar = document.getElementById("search-bar");
 const resultList = document.getElementById("results");
+const searchButton = document.getElementById("search-btn");
+const loadingIndicator = document.getElementById("loadingIndicator");
 
 function generateHash() {
   const ts = new Date().getTime();
@@ -13,10 +15,12 @@ function generateHash() {
 }
 
 function searchHero(name) {
+  loadingIndicator.style.display = "block";
   const url = `${baseUrl}?nameStartsWith=${name}&${generateHash()}`;
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
+      loadingIndicator.style.display = "none";
       resultList.innerHTML = "";
       const characters = data.data.results;
       if (characters.length > 0) {
@@ -37,6 +41,7 @@ function searchHero(name) {
 }
 
 function fetchComics(characterId) {
+  loadingIndicator.style.display = "block";
   const url = `${comicsBaseUrl}${characterId}/comics?${generateHash()}`;
   fetch(url)
     .then((response) => response.json())
@@ -56,6 +61,7 @@ function fetchComics(characterId) {
 }
 
 function createComicList(comics) {
+  loadingIndicator.style.display = "none";
   let comicList = "";
   comics.forEach((comic) => {
     const title = comic.title;
@@ -86,7 +92,19 @@ searchBar.addEventListener("keyup", (event) => {
     const searchTerm = event.target.value.trim();
     if (searchTerm) {
       searchHero(searchTerm);
+    } else {
+      alert("Pls enter a Superhero name");
     }
+  }
+});
+
+searchButton.addEventListener("click", (event) => {
+  const searchTerm = searchBar.value.trim();
+  console.log(searchTerm);
+  if (searchTerm) {
+    searchHero(searchTerm);
+  } else {
+    alert("Pls enter a Superhero name");
   }
 });
 
