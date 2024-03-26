@@ -58,14 +58,17 @@
 }
 
 .hero-details {
-  font-size: medium;
   display: flex;
   justify-content: center;
+  align-items: center;
+
+  padding: 4px;
+  flex-direction: column;
 }
 .hero-details h3 {
   /* font-size: medium; */
-  padding-top: 4px;
+  padding: 2px 20px;
   font-size: medium;
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
 }
