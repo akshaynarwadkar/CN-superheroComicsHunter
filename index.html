@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="/2555.jpg" type="image/x-icon" />
+    <link rel="icon" href="/favicon.jpg" type="image/x-icon" />
     <title>Superhero Comics Hunter</title>
     <link
       rel="stylesheet"
@@ -17,15 +17,21 @@
   <body>
     <div class="container">
       <h1>Superhero Comics Hunter 🦸📖</h1>
+
       <div class="search-bar">
         <input type="text" id="search-bar" placeholder="Enter superhero name" />
         <button type="button" id="search-btn">
           <span>Search</span>
         </button>
       </div>
+
       <div id="loadingIndicator" class="text-center mt-3" style="display: none">
         <div class="spinner-border" role="status"></div>
       </div>
+      <div
+        id="defaultHeroesList"
+        class="row row-cols-2 row-cols-md-5 g-5"
+      ></div>
       <div id="results" class="row justify-content-center mt-5 list-group">
         <ul class="list-group"></ul>
       </div>

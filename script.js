@@ -7,11 +7,68 @@ const searchBar = document.getElementById("search-bar");
 const resultList = document.getElementById("results");
 const searchButton = document.getElementById("search-btn");
 const loadingIndicator = document.getElementById("loadingIndicator");
+const defaultSuperheroes = [
+  "Spider-Man (Peter Parker)",
+  "Magneto",
+  "Professor X",
+  "iron man",
+  "hulk",
+  "black widow",
+  "daredevil",
+  "wolverine",
+  "deadpool",
+  "Storm",
+];
 
+document.addEventListener("DOMContentLoaded", () => {
+  displayDefaultSuperheroes();
+});
 function generateHash() {
   const ts = new Date().getTime();
   const hash = window.CryptoJS.MD5(`${ts}${privateKey}${publicKey}`).toString();
   return `ts=${ts}&apikey=${publicKey}&hash=${hash}`;
+}
+function displayDefaultSuperheroes() {
+  // const loadingIndicator = document.getElementById("loadingIndicator");
+  const defaultHeroesList = document.getElementById("defaultHeroesList");
+  console.log("running ");
+
+  // loadingIndicator.style.display = "block";
+
+  defaultSuperheroes.forEach((heroName) => {
+    const url = `${baseUrl}?name=${heroName}&${generateHash()}`;
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        const hero = data.data.results[0];
+
+        const thumbnailUrl = `${hero.thumbnail.path}.${hero.thumbnail.extension}`;
+        // console.log(thumbnailUrl);
+        const listItem = document.createElement("li");
+        listItem.classList.add("default-hero-item");
+        listItem.innerHTML = `
+          <div class="hero-item">
+              <a href="${hero.urls[2].url}" target="_blank">
+                <img src="${thumbnailUrl}" alt="${
+          hero.name
+        }" width="150" height="150" class="default-hero-image">
+            </a>
+            <div class="hero-details">
+              <h3>${
+                hero.name === "Spider-Man (Peter Parker)"
+                  ? "Spider-Man"
+                  : hero.name
+              }</h3>
+            </div>
+          </div>
+        `;
+        defaultHeroesList.appendChild(listItem);
+      })
+      .catch((error) => console.error(error))
+      .finally(() => {
+        // loadingIndicator.style.display = "none";
+      });
+  });
 }
 
 function searchHero(name) {
@@ -54,7 +111,7 @@ function fetchComics(characterId) {
         const comics = comicsData.data.results;
         listItem.innerHTML = createComicList(comics);
       } else {
-        listItem.innerText = "No comics found for this character.";
+        listItem.innerText = "No comics found for this character";
       }
     })
     .catch((error) => console.error(error));
@@ -98,7 +155,7 @@ searchBar.addEventListener("keyup", (event) => {
   }
 });
 
-searchButton.addEventListener("click", (event) => {
+searchButton.addEventListener("click", () => {
   const searchTerm = searchBar.value.trim();
   console.log(searchTerm);
   if (searchTerm) {

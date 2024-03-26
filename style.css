@@ -45,3 +45,27 @@
 .center-card-col li {
   width: 40vw;
 }
+
+.default-hero-item {
+  padding: 4px;
+  list-style-type: none;
+}
+.hero-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.hero-details {
+  font-size: medium;
+  display: flex;
+  justify-content: center;
+}
+.hero-details h3 {
+  /* font-size: medium; */
+  padding-top: 4px;
+  font-size: medium;
+  display: flex;
+  justify-content: center;
+}
