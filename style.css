@@ -1,3 +1,7 @@
+#title {
+  text-decoration: none;
+}
+
 .small-comic-image {
   width: 20px;
   height: 60px;
@@ -15,22 +19,29 @@
 }
 .search-bar {
   display: flex;
-  width: 90vw;
+  justify-content: space-around;
+  gap: 2px;
+  width: 92vw;
   margin-top: 10px;
   margin-bottom: 10px;
 }
 .search-bar input {
-  width: 90vw;
+  width: 70vw;
   margin-right: 10px;
   padding: 5px;
 }
-.search-bar button {
+#search-btn {
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: aqua;
   width: 10vw;
   padding: 5px;
+}
+
+#showFavoritesBtn {
+  font-size: 15px;
+  background-color: yellow;
 }
 
 .center-card-col {

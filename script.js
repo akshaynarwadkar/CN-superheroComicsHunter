@@ -19,10 +19,19 @@ const defaultSuperheroes = [
   "deadpool",
   "Storm",
 ];
-const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
 document.addEventListener("DOMContentLoaded", () => {
-  displayDefaultSuperheroes();
+  const hash = window.location.hash;
+  if (hash === "#favorites") {
+    console.log("refresh entered with has hash fav");
+    showFavorites();
+  } else {
+    console.log("refresh entered with has hash blank");
+
+    displayDefaultSuperheroes();
+  }
+  // displayDefaultSuperheroes();
 });
 function generateHash() {
   const ts = new Date().getTime();
@@ -32,7 +41,8 @@ function generateHash() {
 function displayDefaultSuperheroes() {
   // const loadingIndicator = document.getElementById("loadingIndicator");
   const defaultHeroesList = document.getElementById("defaultHeroesList");
-
+  defaultHeroesList.innerHTML = "";
+  window.location.hash = "";
   // console.log("running ");
 
   // loadingIndicator.style.display = "block";
@@ -43,7 +53,7 @@ function displayDefaultSuperheroes() {
       .then((response) => response.json())
       .then((data) => {
         const hero = data.data.results[0];
-
+        favorites = JSON.parse(localStorage.getItem("favorites")) || [];
         const isFavorite = favorites.includes(hero.id.toString());
 
         const thumbnailUrl = `${hero.thumbnail.path}.${hero.thumbnail.extension}`;
@@ -171,72 +181,78 @@ function searchHero(name) {
     .finally(() => {
       loadingIndicator.style.display = "none";
     });
-  ///
-  //   resultList.innerHTML = "";
-  //   const characters = data.data.results;
-  //   if (characters.length > 0) {
-  //     characters.forEach((character) => {
-  //       const listItem = document.createElement("li");
-  //       listItem.classList.add("list-group-item");
-  //       listItem.innerHTML = `<a href="#" class="character-link" data-character-id="${character.id}">${character.name}</a>`;
-  //       resultList.appendChild(listItem);
-  //     });
-  //   } else {
-  //     const listItem = document.createElement("li");
-  //     listItem.classList.add("list-group-item");
-  //     listItem.innerText = "No results found.";
-  //     resultList.appendChild(listItem);
-  //   }
-  // })
-  // .catch((error) => console.error(error));
 }
 
-// function fetchComics(characterId) {
-//   loadingIndicator.style.display = "block";
-//   const url = `${comicsBaseUrl}${characterId}/comics?${generateHash()}`;
-//   fetch(url)
-//     .then((response) => response.json())
-//     .then((comicsData) => {
-//       const listItem = document.querySelector(
-//         `a[data-character-id="${characterId}"]`
-//       ).parentElement;
-//       listItem.innerHTML = "";
-//       if (comicsData.data.count > 0) {
-//         const comics = comicsData.data.results;
-//         listItem.innerHTML = createComicList(comics);
-//       } else {
-//         listItem.innerText = "No comics found for this character";
-//       }
-//     })
-//     .catch((error) => console.error(error));
-// }
+function showFavorites() {
+  window.location.hash = "favorites";
+  const defaultHeroesList = document.getElementById("defaultHeroesList");
+  defaultHeroesList.innerHTML = "";
+  window.location.hash = "favorites";
 
-// function createComicList(comics) {
-//   loadingIndicator.style.display = "none";
-//   let comicList = "";
-//   comics.forEach((comic) => {
-//     const title = comic.title;
-//     const description = comic.description || "No description available.";
-//     const truncatedDescription =
-//       description.split(" ").slice(0, 20).join(" ") +
-//       (description.split(" ").length > 20 ? "..." : "");
+  const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
-//     const thumbnailUrl = `${comic.thumbnail.path}.${comic.thumbnail.extension}`;
-//     const comicUrl = `http://marvel.com/comics/issue/${comic.id}/${comic.title}?utm_campaign=apiRef&utm_source=41318449c00ca45c69f14ba5bd6682af`; // Construct comic URL
+  if (favorites.length === 0) {
+    const listItem = document.createElement("li");
+    listItem.classList.add("default-hero-item");
+    listItem.textContent = "No favorite superheroes found.";
+    defaultHeroesList.appendChild(listItem);
+    return;
+  }
 
-//     comicList += `
-//       <div class="card mb-3">
-//         <img src="${thumbnailUrl}" class="card-img-top small-comic-image" alt="${title} ">
-//         <div class="card-body">
-//           <h5 class="card-title">${title}</h5>
-//           <p class="card-text">${truncatedDescription}</p>
-//           <a href="${comicUrl}" class="btn btn-primary">View Comic</a>
-//         </div>
-//       </div>
-//     `;
-//   });
-//   return comicList;
-// }
+  favorites.forEach((heroId) => {
+    const url = `${baseUrl}/${heroId}?${generateHash()}`;
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        const hero = data.data.results[0];
+        const thumbnailUrl = `${hero.thumbnail.path}.${hero.thumbnail.extension}`;
+        const listItem = document.createElement("li");
+        listItem.classList.add("default-hero-item");
+        listItem.innerHTML = `
+          <div class="hero-item">
+            <div>
+              <a href="${hero.urls[1].url}" target="_blank">
+                <img src="${thumbnailUrl}" alt="${
+          hero.name
+        }" width="150" height="150" class="default-hero-image">
+              </a>
+            </div>
+            <div class="hero-details">
+              <h3>${
+                hero.name === "Spider-Man (Peter Parker)"
+                  ? "Spider-Man"
+                  : hero.name
+              }</h3>
+              <button class="remove-favorite-btn" data-id="${
+                hero.id
+              }">Remove from Favorites</button>
+            </div>
+          </div>
+        `;
+        const removeFavoriteBtn = listItem.querySelector(
+          ".remove-favorite-btn"
+        );
+
+        if (removeFavoriteBtn) {
+          removeFavoriteBtn.addEventListener("click", handleRemoveFavorite);
+        }
+        defaultHeroesList.appendChild(listItem);
+      })
+      .catch((error) => console.error(error));
+  });
+}
+
+function handleRemoveFavorite(event) {
+  console.log("entered remove fav func");
+  const btn = event.currentTarget;
+  const heroId = btn.dataset.id;
+  let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+  favorites = favorites.filter((id) => id !== heroId);
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+
+  showFavorites();
+}
 
 searchBar.addEventListener("keyup", (event) => {
   if (event.key === "Enter") {
@@ -259,9 +275,8 @@ searchButton.addEventListener("click", () => {
   }
 });
 
-// resultList.addEventListener("click", (event) => {
-//   if (event.target.classList.contains("character-link")) {
-//     const characterId = event.target.dataset.characterId;
-//     fetchComics(characterId);
-//   }
-// });
+const showFavoritesBtn = document.getElementById("showFavoritesBtn");
+showFavoritesBtn.addEventListener("click", showFavorites);
+
+const titleElement = document.getElementById("title");
+titleElement.addEventListener("click", displayDefaultSuperheroes);
