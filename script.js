@@ -36,13 +36,9 @@ function generateHash() {
   return `ts=${ts}&apikey=${publicKey}&hash=${hash}`;
 }
 function displayDefaultSuperheroes() {
-  
   const defaultHeroesList = document.getElementById("defaultHeroesList");
   defaultHeroesList.innerHTML = "";
   window.location.hash = "";
-
-
-
 
   defaultSuperheroes.forEach((heroName) => {
     const url = `${baseUrl}?name=${heroName}&${generateHash()}`;
@@ -54,7 +50,7 @@ function displayDefaultSuperheroes() {
         const isFavorite = favorites.includes(hero.id.toString());
 
         const thumbnailUrl = `${hero.thumbnail.path}.${hero.thumbnail.extension}`;
-    
+
         const listItem = document.createElement("li");
         listItem.classList.add("default-hero-item");
         listItem.innerHTML = `
@@ -95,7 +91,6 @@ function displayDefaultSuperheroes() {
   // });
 }
 function handleFavoriteClick(event) {
-
   const btn = event.currentTarget;
   const heroId = btn.dataset.id;
   let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -248,6 +243,7 @@ function handleRemoveFavorite(event) {
 searchBar.addEventListener("keyup", (event) => {
   if (event.key === "Enter") {
     const searchTerm = event.target.value.trim();
+    event.target.value = "";
     if (searchTerm) {
       searchHero(searchTerm);
     } else {
@@ -258,6 +254,7 @@ searchBar.addEventListener("keyup", (event) => {
 
 searchButton.addEventListener("click", () => {
   const searchTerm = searchBar.value.trim();
+  searchBar.value = "";
 
   if (searchTerm) {
     searchHero(searchTerm);
