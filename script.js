@@ -162,8 +162,8 @@ function searchHero(name) {
 
         const listItem = document.createElement("li");
         listItem.classList.add("list-group-item");
-        listItem.innerText =
-          "Not found. <br/>Hey, just ensure you aint searching for DC SuperHeroes who are not heroes but clowns <br/>(except Batman though):D ";
+        listItem.innerHTML =
+          "Oops! It seems like you've entered the DC Universe by mistake 😈 <br> <span style='color: blue;'>Please search for a Marvel superhero to experience true heroic greatness!😎</span>";
         resultList.appendChild(listItem);
       }
     })
