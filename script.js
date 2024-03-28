@@ -24,11 +24,8 @@ let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 document.addEventListener("DOMContentLoaded", () => {
   const hash = window.location.hash;
   if (hash === "#favorites") {
-    console.log("refresh entered with has hash fav");
     showFavorites();
   } else {
-    console.log("refresh entered with has hash blank");
-
     displayDefaultSuperheroes();
   }
   // displayDefaultSuperheroes();
@@ -39,13 +36,13 @@ function generateHash() {
   return `ts=${ts}&apikey=${publicKey}&hash=${hash}`;
 }
 function displayDefaultSuperheroes() {
-  // const loadingIndicator = document.getElementById("loadingIndicator");
+  
   const defaultHeroesList = document.getElementById("defaultHeroesList");
   defaultHeroesList.innerHTML = "";
   window.location.hash = "";
-  // console.log("running ");
 
-  // loadingIndicator.style.display = "block";
+
+
 
   defaultSuperheroes.forEach((heroName) => {
     const url = `${baseUrl}?name=${heroName}&${generateHash()}`;
@@ -57,7 +54,7 @@ function displayDefaultSuperheroes() {
         const isFavorite = favorites.includes(hero.id.toString());
 
         const thumbnailUrl = `${hero.thumbnail.path}.${hero.thumbnail.extension}`;
-        // console.log(thumbnailUrl);
+    
         const listItem = document.createElement("li");
         listItem.classList.add("default-hero-item");
         listItem.innerHTML = `
@@ -98,7 +95,7 @@ function displayDefaultSuperheroes() {
   // });
 }
 function handleFavoriteClick(event) {
-  console.log("clicked");
+
   const btn = event.currentTarget;
   const heroId = btn.dataset.id;
   let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -119,27 +116,24 @@ function handleFavoriteClick(event) {
 function searchHero(name) {
   const defaultHeroesList = document.getElementById("defaultHeroesList");
   defaultHeroesList.innerHTML = "";
+  resultList.innerHTML = "";
   loadingIndicator.style.display = "block";
   const url = `${baseUrl}?nameStartsWith=${name}&${generateHash()}`;
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
-      // console.log("data is", data);
-
       loadingIndicator.style.display = "none";
-      ////
-      // console.log("data is", data);
 
       const heroes = data.data.results;
-      // console.log("heroes is", heroes);
+
       if (heroes.length > 0) {
         heroes.forEach((hero) => {
           const isFavorite = favorites.includes(hero.id.toString());
           const thumbnailUrl = `${hero.thumbnail.path}.${hero.thumbnail.extension}`;
-          console.log(thumbnailUrl);
+
           const listItem = document.createElement("li");
           listItem.classList.add("default-hero-item");
-          console.log("hero.urls", hero.urls);
+
           listItem.innerHTML = `
                 <div class="hero-item">
                 <div>
@@ -168,8 +162,6 @@ function searchHero(name) {
           defaultHeroesList.appendChild(listItem);
         });
       } else {
-        console.log("heroes is", heroes.length);
-
         const listItem = document.createElement("li");
         listItem.classList.add("list-group-item");
         listItem.innerHTML =
@@ -243,7 +235,6 @@ function showFavorites() {
 }
 
 function handleRemoveFavorite(event) {
-  console.log("entered remove fav func");
   const btn = event.currentTarget;
   const heroId = btn.dataset.id;
   let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -267,7 +258,7 @@ searchBar.addEventListener("keyup", (event) => {
 
 searchButton.addEventListener("click", () => {
   const searchTerm = searchBar.value.trim();
-  console.log(searchTerm);
+
   if (searchTerm) {
     searchHero(searchTerm);
   } else {
