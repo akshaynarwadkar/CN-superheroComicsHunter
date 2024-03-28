@@ -38,6 +38,7 @@ function generateHash() {
 function displayDefaultSuperheroes() {
   const defaultHeroesList = document.getElementById("defaultHeroesList");
   defaultHeroesList.innerHTML = "";
+  resultList.innerHTML = "";
   window.location.hash = "";
 
   defaultSuperheroes.forEach((heroName) => {
