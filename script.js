@@ -204,12 +204,17 @@ function showFavorites() {
       .then((data) => {
         const hero = data.data.results[0];
         const thumbnailUrl = `${hero.thumbnail.path}.${hero.thumbnail.extension}`;
+        const comicURL = hero.urls.filter((cl) => {
+          if (cl.type === "comiclink") {
+            return cl;
+          }
+        });
         const listItem = document.createElement("li");
         listItem.classList.add("default-hero-item");
         listItem.innerHTML = `
           <div class="hero-item">
             <div>
-              <a href="${hero.urls[1].url}" target="_blank">
+              <a href="${comicURL[0].url}" target="_blank"> 
                 <img src="${thumbnailUrl}" alt="${
           hero.name
         }" width="150" height="150" class="default-hero-image">
