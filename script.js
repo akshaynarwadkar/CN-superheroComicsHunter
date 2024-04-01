@@ -37,8 +37,9 @@ function generateHash() {
 }
 function displayDefaultSuperheroes() {
   const defaultHeroesList = document.getElementById("defaultHeroesList");
-  const recSuperheroes = document.getElementById("recSuperheroes");
-  defaultHeroesList.innerHTML = "<h2>kajsdn</h2>";
+  // const recSuperheroes = document.getElementById("recSuperheroes");
+  // recSuperheroes.innerHTML = "<h2>kajsdn</h2>";
+  defaultHeroesList.innerHTML = "";
   resultList.innerHTML = "";
   window.location.hash = "";
 
@@ -81,7 +82,7 @@ function displayDefaultSuperheroes() {
         `;
         const favBtn = listItem.querySelector(".favorite-btn");
         favBtn.addEventListener("click", handleFavoriteClick);
-        recSuperheroes.appendChild(listItem);
+        defaultHeroesList.appendChild(listItem);
       })
       .catch((error) => console.error(error))
       .finally(() => {
