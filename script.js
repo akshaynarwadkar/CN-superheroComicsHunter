@@ -56,6 +56,7 @@ function displayDefaultSuperheroes() {
 
         const listItem = document.createElement("li");
         listItem.classList.add("default-hero-item");
+        console.log("default", hero.urls[1].url);
         listItem.innerHTML = `<br/>
           <div class="hero-item">
           
@@ -129,14 +130,24 @@ function searchHero(name) {
         heroes.forEach((hero) => {
           const isFavorite = favorites.includes(hero.id.toString());
           const thumbnailUrl = `${hero.thumbnail.path}.${hero.thumbnail.extension}`;
+          // const thumbnailUrl = `${hero.thumbnail.path}`;
 
           const listItem = document.createElement("li");
           listItem.classList.add("default-hero-item");
+          console.log(" searched hero a url", hero.name, hero.urls);
+          const comicURL = hero.urls.filter((cl) => {
+            if (cl.type === "comiclink") {
+              return cl;
+            }
+          });
+
+          console.log("comicURL", comicURL);
+          // console.log(" searched hero - thumbnailUrl", hero.name, thumbnailUrl); <a href="${hero.urls[1].url}" target="_blank">
 
           listItem.innerHTML = `
                 <div class="hero-item">
                 <div>
-                    <a href="${hero.urls[1].url}" target="_blank">
+                    <a href="${comicURL[0].url}" target="_blank">
                       <img src="${thumbnailUrl}" alt="${
             hero.name
           }" width="150" height="150" class="default-hero-image">
