@@ -37,7 +37,8 @@ function generateHash() {
 }
 function displayDefaultSuperheroes() {
   const defaultHeroesList = document.getElementById("defaultHeroesList");
-  defaultHeroesList.innerHTML = "";
+  const recSuperheroes = document.getElementById("recSuperheroes");
+  defaultHeroesList.innerHTML = "<h2>kajsdn</h2>";
   resultList.innerHTML = "";
   window.location.hash = "";
 
@@ -54,8 +55,9 @@ function displayDefaultSuperheroes() {
 
         const listItem = document.createElement("li");
         listItem.classList.add("default-hero-item");
-        listItem.innerHTML = `
+        listItem.innerHTML = `<br/>
           <div class="hero-item">
+          
           <div>
               <a href="${hero.urls[2].url}" target="_blank">
                 <img src="${thumbnailUrl}" alt="${
@@ -79,7 +81,7 @@ function displayDefaultSuperheroes() {
         `;
         const favBtn = listItem.querySelector(".favorite-btn");
         favBtn.addEventListener("click", handleFavoriteClick);
-        defaultHeroesList.appendChild(listItem);
+        recSuperheroes.appendChild(listItem);
       })
       .catch((error) => console.error(error))
       .finally(() => {
