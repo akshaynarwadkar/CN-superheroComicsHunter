@@ -87,13 +87,10 @@ function displayDefaultSuperheroes() {
       })
       .catch((error) => console.error(error))
       .finally(() => {
-        // loadingIndicator.style.display = "none";
+        loadingIndicator.style.display = "none";
       });
   });
-  // const favoriteBtns = document.querySelectorAll(".favorite-btn");
-  // favoriteBtns.forEach((btn) => {
-  //   btn.addEventListener("click", handleFavoriteClick);
-  // });
+
 }
 function handleFavoriteClick(event) {
   const btn = event.currentTarget;
@@ -130,7 +127,7 @@ function searchHero(name) {
         heroes.forEach((hero) => {
           const isFavorite = favorites.includes(hero.id.toString());
           const thumbnailUrl = `${hero.thumbnail.path}.${hero.thumbnail.extension}`;
-          // const thumbnailUrl = `${hero.thumbnail.path}`;
+     
 
           const listItem = document.createElement("li");
           listItem.classList.add("default-hero-item");
@@ -142,7 +139,6 @@ function searchHero(name) {
           });
 
           console.log("comicURL", comicURL);
-          // console.log(" searched hero - thumbnailUrl", hero.name, thumbnailUrl); <a href="${hero.urls[1].url}" target="_blank">
 
           listItem.innerHTML = `
                 <div class="hero-item">
